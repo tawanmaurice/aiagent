@@ -1,18 +1,20 @@
-resource "aws_cloudwatch_event_rule" "daily_run" {
-  name                = "speaking-agent-daily"
+########################################
+# CloudWatch Events rule to trigger Lambda
+########################################
+
+resource "aws_cloudwatch_event_rule" "speaking_agent_schedule" {
+  name                = "speaking-agent-schedule"
+  description         = "Run the speaking-agent Lambda on a schedule"
+  # You can change this later to rate(1 day) or a CRON
   schedule_expression = "rate(1 day)"
 }
 
-resource "aws_cloudwatch_event_target" "lambda_target" {
-  rule      = aws_cloudwatch_event_rule.daily_run.name
-  target_id = "speaking-agent"
-  arn       = aws_lambda_function.speaking_agent.arn
-}
+########################################
+# Event target: send the rule to the Lambda
+########################################
 
-resource "aws_lambda_permission" "allow_eventbridge" {
-  statement_id  = "AllowExecutionFromEventBridge"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.speaking_agent.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.daily_run.arn
+resource "aws_cloudwatch_event_target" "speaking_agent_target" {
+  rule      = aws_cloudwatch_event_rule.speaking_agent_schedule.name
+  target_id = "speaking-agent-lambda"
+  arn       = aws_lambda_function.speaking_agent.arn
 }

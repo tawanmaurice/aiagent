@@ -1,39 +1,16 @@
-# ================================
-# Terraform
-# ================================
-*.tfstate
-*.tfstate.*
-crash.log
-crash.*.log
-override.tf
-override.tf.json
-*.tfvars
-terraform.tfvars
-.terraform/
-.terraform.lock.hcl
-
-# ================================
-# Lambda Build Artifacts
-# ================================
-lambda_build/
-lambda_function.zip
-
-# Python cache
+# Python
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 
-# Virtual environments
-venv/
-.env/
-.python-version
+# Lambda build artifacts
+*.zip
 
-# ================================
-# OS & Editor Junk Files
-# ================================
-.DS_Store
-Thumbs.db
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate
+terraform.tfstate.*
 
-# VSCode settings (optional)
+# IDE
 .vscode/
+.idea/

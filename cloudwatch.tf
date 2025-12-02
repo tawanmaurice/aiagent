@@ -3,8 +3,8 @@
 ########################################
 
 resource "aws_cloudwatch_event_rule" "speaking_agent_schedule" {
-  name                = "speaking-agent-schedule"
-  description         = "Run the speaking-agent Lambda on a schedule"
+  name        = "speaking-agent-schedule"
+  description = "Run the speaking-agent Lambda on a schedule"
   # You can change this later to rate(1 day) or a CRON
   schedule_expression = "rate(1 day)"
 }

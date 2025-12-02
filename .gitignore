@@ -14,3 +14,5 @@ terraform.tfstate.*
 # IDE
 .vscode/
 .idea/
+lambda_build/
+terraform.tfvars

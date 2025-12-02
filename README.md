@@ -1,85 +1,212 @@
-Autonomous Speaking Engagement Finder/Locator Agent
+Speaking Agent (Autonomous Conference Researcher)
 
-The Autonomous Speaking Engagement Finder/Locator Agent is a serverless system that automatically discovers student leadership conferences and large-scale programs across U.S. colleges and universities. It runs daily, extracts structured data, finds contact emails, and saves every opportunity into DynamoDB—fully hands-free.
+A fully automated pipeline that discovers student leadership conferences, structures the information, and stores it in DynamoDB.
 
-🚀 What It Does
+🚀 Overview
 
-Searches .edu sites using Google Custom Search
+The Speaking Agent is an autonomous research system that automatically finds student leadership conferences, student leadership programs, and large-scale student leadership events hosted by colleges and universities.
 
-Extracts real conferences & programs using OpenAI
+Once configured, the system runs completely on its own — no human input required.
 
-Scrapes webpages to find contact emails
+On each scheduled run, it:
 
-Stores everything in DynamoDB with timestamps and seen counts
+Searches .edu websites for new conferences
 
-Runs automatically on a schedule via EventBridge
+Structures the information using OpenAI
 
-Requires zero manual input
+Extracts contact emails (when available)
 
-🔧 Setup & Install
+Saves the results into a DynamoDB table
 
-Clone the repo:
+Updates past items with seen_count, status, and new emails
 
-git clone https://github.com/yourname/speaking-agent.git
-cd speaking-agent
+This creates a continuous stream of fresh speaking opportunities for future speaking engagements.
 
+⚙️ How It Works (High-Level)
+1. EventBridge Schedule (2x per day)
 
-Install dependencies:
+Triggers the Lambda with a predefined topic like:
 
-pip install -r requirements.txt
-
-🔑 Environment Variables
-
-Set these in AWS Lambda → Configuration → Environment Variables:
-
-Variable	Description
-GOOGLE_API_KEY	Google CSE API key
-GOOGLE_CX	Google Search Engine ID
-OPENAI_API_KEY	OpenAI key
-OPENAI_MODEL	e.g., gpt-4.1-mini
-DDB_TABLE_NAME	DynamoDB table name
-🛠️ Deployment
-
-Zip and upload to Lambda:
-
-zip -r speaking-agent.zip lambda_function.py requirements.txt
+student leadership conferences and large-scale student leadership programs...
 
 
-Upload the ZIP into AWS Lambda
+This ensures the agent runs automatically every day.
 
-Set timeout ~45s
+2. Google Custom Search Engine (CSE)
 
-Configure environment variables
+The Lambda performs a 3-page Google search:
 
-Deploy
+Page 1 → first 10 results
 
-⏱️ Scheduling
+Page 2 → next 10 results
 
-Create an EventBridge rule:
+Page 3 → next 10 results
 
-Twice a day:
+Up to 30 results per run.
 
-cron(0 8,20 * * ? *)
+All results are filtered by:
 
-📦 DynamoDB Record Example
+site:.edu
+student leadership conference
+
+3. OpenAI Structuring
+
+Google’s raw search output is messy.
+OpenAI transforms it into clean JSON with fields like:
+
+conference_name
+
+school_name
+
+organization
+
+location
+
+audience
+
+date
+
+url
+
+contact_email
+
+notes
+
+Up to 8–10 conferences per run.
+
+4. Email Extraction
+
+For each conference (up to 5 per run):
+
+The agent fetches the conference webpage
+
+Scans the HTML for any valid email address
+
+Adds it as contact_email
+
+If no email is found, the record still saves — you can follow up manually.
+
+5. DynamoDB Storage
+
+Each conference is saved with:
+
+id (stable, used to avoid duplicates)
+
+conference_name
+
+url
+
+contact_email
+
+status (default: NEW)
+
+seen_count (increments every time the conference appears)
+
+created_at
+
+updated_at
+
+This allows DynamoDB to serve as a lead database / mini CRM.
+
+🗂 Example DynamoDB Item
 {
-  "id": "example-conference",
-  "conference_name": "Student Leadership Summit",
-  "school_name": "Example University",
-  "url": "https://example.edu/leadership",
-  "contact_email": "leadership@example.edu",
-  "seen_count": 2,
+  "id": "vacuho-student-leadership-conference",
+  "conference_name": "VACUHO Student Leadership Conference",
+  "school_name": "Virginia Community Colleges",
+  "location": "Virginia, USA",
+  "url": "https://vacuho.org/student-leadership-conference",
+  "contact_email": "info@vacuho.org",
   "status": "NEW",
-  "created_at": "2025-01-18T12:00:00Z",
-  "updated_at": "2025-01-18T12:00:00Z"
+  "seen_count": 3,
+  "created_at": "2025-12-01T14:00:00Z",
+  "updated_at": "2025-12-02T14:00:00Z"
 }
 
-📈 Roadmap
+📦 Files Included
+lambda_function.py
 
-Optional outreach email generator
+The main logic:
 
-Automated reports
+Google search (multi-page)
 
-Dashboard
+OpenAI conference structuring
 
-Multi-topic rotation
+Email extraction
+
+DynamoDB upsert logic
+
+Full orchestration pipeline
+
+main.tf / variables.tf / outputs.tf (optional)
+
+Terraform infrastructure (Lambda, IAM roles, EventBridge Schedule, DynamoDB, etc.)
+
+🧠 Why This Agent Exists
+
+For speakers who want to book more student leadership events, it is extremely difficult to manually:
+
+Search dozens of universities daily
+
+Identify which events are relevant
+
+Extract contact information
+
+Track leads over time
+
+This autonomous agent does all of that automatically.
+
+It becomes your:
+
+24/7 tireless research assistant
+finding real student leadership conferences for you
+while you sleep.
+
+🔮 Future Enhancements (Optional)
+
+These features can be added later:
+
+1. Outreach Email Generator Lambda
+
+Reads NEW conferences → drafts personalized outreach emails for you.
+
+2. Daily/Weekly Report Email
+
+Automatically sends you a summary of:
+
+New conferences found
+
+Emails collected
+
+Top opportunities
+
+Repeated high-value leads
+
+3. Multi-topic Rotation
+
+Searches different slices such as:
+
+Community colleges
+
+HBCUs
+
+West Coast programs
+
+Leadership retreats
+
+Orientation leader conferences
+
+🏁 Summary
+
+This agent is fully autonomous, hands-free, and built specifically for student leadership speaking opportunities. You set it once — and it continuously discovers relevant events, enriches them, and stores them for outreach.
+
+Perfect for speakers who want:
+
+A continuous pipeline
+
+Without manual research
+
+Without guessing
+
+Without burnout
+
+You now have a fully automated speaking-opportunity engine.

@@ -16,12 +16,6 @@ Runs automatically on a schedule via EventBridge
 
 Requires zero manual input
 
-📁 Project Structure
-/
-├── lambda_function.py
-├── requirements.txt
-└── README.md
-
 🔧 Setup & Install
 
 Clone the repo:

@@ -11,6 +11,7 @@ import requests
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
 
+# Environment variables from Lambda / Terraform
 DDB_TABLE_NAME = os.getenv("DDB_TABLE_NAME")
 GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 GOOGLE_CX = os.getenv("GOOGLE_CX")
@@ -22,6 +23,7 @@ AGENT_SOURCE = os.getenv("AGENT_SOURCE", "sga-agent")
 DEFAULT_QUERY = "Student Government Association leadership retreat site:.edu"
 SEARCH_QUERIES = os.getenv("SEARCH_QUERIES", DEFAULT_QUERY).split("||")
 
+# Limit how many search results per run
 MAX_RESULTS = int(os.getenv("MAX_RESULTS", "10"))
 
 dynamodb = boto3.resource("dynamodb")
@@ -29,6 +31,7 @@ table = dynamodb.Table(DDB_TABLE_NAME)
 
 
 def google_search(query: str) -> list:
+    """Call Google Programmable Search (CSE) for a query."""
     url = "https://www.googleapis.com/customsearch/v1"
     params = {
         "key": GOOGLE_API_KEY,
@@ -43,6 +46,7 @@ def google_search(query: str) -> list:
 
 
 def fetch_emails_from_url(url: str) -> list:
+    """Fetch a page and extract emails using regex."""
     logger.info(f"[fetch_emails_from_url] Fetching {url}")
     try:
         resp = requests.get(url, timeout=15)
@@ -52,6 +56,7 @@ def fetch_emails_from_url(url: str) -> list:
         logger.warning(f"[fetch_emails_from_url] Error fetching {url}: {e}")
         return []
 
+    # Basic email regex
     email_pattern = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
     emails = re.findall(email_pattern, html)
     unique_emails = sorted(set(emails))
@@ -62,25 +67,26 @@ def fetch_emails_from_url(url: str) -> list:
 
 
 def choose_primary_email(url: str, emails: list) -> str | None:
+    """Prefer .edu email matching the site's domain; else first .edu; else first."""
     if not emails:
         return None
 
-    # grab domain from URL
+    # Get domain from URL
     domain_match = re.search(r"https?://([^/]+)/?", url)
     page_domain = domain_match.group(1).lower() if domain_match else ""
 
-    # 1) .edu + contains site domain
+    # 1) .edu and contains domain
     for e in emails:
         lower = e.lower()
         if lower.endswith(".edu") and page_domain and page_domain.split(":")[0] in lower:
             return e
 
-    # 2) any .edu
+    # 2) any .edu email
     for e in emails:
         if e.lower().endswith(".edu"):
             return e
 
-    # 3) fallback
+    # 3) fallback: first email
     return emails[0]
 
 
@@ -113,6 +119,7 @@ def run_agent() -> int:
             emails = fetch_emails_from_url(url)
             primary_email = choose_primary_email(url, emails)
 
+            # Deterministic ID based on source + URL
             record_id = uuid.uuid5(
                 uuid.NAMESPACE_URL, f"{AGENT_SOURCE}:{url}"
             ).hex

@@ -1,53 +1,103 @@
-########################################
-# Lambda function for Speaking Agent
-########################################
+#########################################
+# LAMBDA FUNCTIONS (4 AGENTS)
+#########################################
 
-# Assumes you build lambda_function.zip manually in the project root
-# (same folder as this .tf file), containing lambda_function.py
-# and any dependencies.
-
-resource "aws_lambda_function" "speaking_agent" {
-  function_name = "speaking-agent"
+resource "aws_lambda_function" "sga_agent" {
+  function_name = "sga-agent"
   role          = aws_iam_role.lambda_exec.arn
+  handler       = "sga_lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  memory_size   = 512
+  timeout       = 30
 
-  # Python handler: file "lambda_function.py", function "lambda_handler"
-  handler = "lambda_function.lambda_handler"
-  runtime = "python3.11"
-
-  # Zip file with your Lambda code + dependencies
-  filename         = "${path.module}/lambda_function.zip"
-  source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
-
-  timeout     = 900
-  memory_size = 512
+  filename         = "lambda_function.zip"
+  source_code_hash = filebase64sha256("lambda_function.zip")
 
   environment {
     variables = {
-      # DynamoDB table for saving conferences / leads
       DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-
-      # OpenAI config
       OPENAI_API_KEY = var.openai_api_key
       OPENAI_MODEL   = "gpt-4.1-mini"
-
-      # Google Programmable Search config
       GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx_id # MUST be GOOGLE_CX for the Python code
-
-      # Optional: override autonomous topics (comma-separated)
-      # AUTO_TOPICS = "student leadership conference 2025 at community colleges in the Midwest, student leadership summit 2025 at universities in the Northeast"
+      GOOGLE_CX      = var.google_cx
     }
   }
 }
 
-########################################
-# Lambda permissions for CloudWatch rule
-########################################
+#########################################
+# ORIENTATION AGENT
+#########################################
 
-resource "aws_lambda_permission" "allow_events" {
-  statement_id  = "AllowExecutionFromCloudWatch"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.speaking_agent.function_name
-  principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.speaking_agent_schedule.arn
+resource "aws_lambda_function" "orientation_agent" {
+  function_name = "orientation-agent"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "sga_lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  memory_size   = 512
+  timeout       = 30
+
+  filename         = "lambda_function.zip"
+  source_code_hash = filebase64sha256("lambda_function.zip")
+
+  environment {
+    variables = {
+      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
+      OPENAI_API_KEY = var.openai_api_key
+      OPENAI_MODEL   = "gpt-4.1-mini"
+      GOOGLE_API_KEY = var.google_api_key
+      GOOGLE_CX      = var.google_cx
+    }
+  }
+}
+
+#########################################
+# LEADERSHIP CONFERENCE AGENT
+#########################################
+
+resource "aws_lambda_function" "leadership_conference_agent" {
+  function_name = "leadership-conference-agent"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "sga_lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  memory_size   = 512
+  timeout       = 30
+
+  filename         = "lambda_function.zip"
+  source_code_hash = filebase64sha256("lambda_function.zip")
+
+  environment {
+    variables = {
+      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
+      OPENAI_API_KEY = var.openai_api_key
+      OPENAI_MODEL   = "gpt-4.1-mini"
+      GOOGLE_API_KEY = var.google_api_key
+      GOOGLE_CX      = var.google_cx
+    }
+  }
+}
+
+#########################################
+# STUDENT ACTIVITIES / RETREATS AGENT
+#########################################
+
+resource "aws_lambda_function" "activities_agent" {
+  function_name = "activities-agent"
+  role          = aws_iam_role.lambda_exec.arn
+  handler       = "sga_lambda_function.lambda_handler"
+  runtime       = "python3.12"
+  memory_size   = 512
+  timeout       = 30
+
+  filename         = "lambda_function.zip"
+  source_code_hash = filebase64sha256("lambda_function.zip")
+
+  environment {
+    variables = {
+      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
+      OPENAI_API_KEY = var.openai_api_key
+      OPENAI_MODEL   = "gpt-4.1-mini"
+      GOOGLE_API_KEY = var.google_api_key
+      GOOGLE_CX      = var.google_cx
+    }
+  }
 }

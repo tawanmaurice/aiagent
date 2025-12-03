@@ -4,9 +4,12 @@ import uuid
 import re
 import logging
 from datetime import datetime, timezone
+from typing import List, Optional
 
 import boto3
-import requests
+import urllib.request
+import urllib.error
+import urllib.parse
 
 logger = logging.getLogger()
 logger.setLevel(logging.INFO)
@@ -16,7 +19,7 @@ GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
 GOOGLE_CX = os.getenv("GOOGLE_CX")
 
 # e.g. "sga-agent", "orientation-agent", etc.
-AGENT_SOURCE = os.getenv("AGENT_SOURCE", "sga-agent")
+AGENT_SOURCE = os.getenv("AGENT_SOURCE", "generic-agent")
 
 # Multiple queries separated by ||
 DEFAULT_QUERY = "Student Government Association leadership retreat site:.edu"
@@ -28,44 +31,64 @@ dynamodb = boto3.resource("dynamodb")
 table = dynamodb.Table(DDB_TABLE_NAME)
 
 
-def google_search(query: str) -> list:
-    url = "https://www.googleapis.com/customsearch/v1"
-    params = {
-        "key": GOOGLE_API_KEY,
-        "cx": GOOGLE_CX,
-        "q": query,
-    }
-    logger.info(f"[google_search] Querying Google CSE: {query}")
-    resp = requests.get(url, params=params, timeout=15)
-    resp.raise_for_status()
-    data = resp.json()
-    return data.get("items", [])
-
-
-def fetch_emails_from_url(url: str) -> list:
-    logger.info(f"[fetch_emails_from_url] Fetching {url}")
+def http_get(url: str, timeout: int = 15) -> str:
+    """Simple HTTP GET using standard library."""
+    logger.info(f"[http_get] GET {url}")
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     try:
-        resp = requests.get(url, timeout=15)
-        resp.raise_for_status()
-        html = resp.text
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            return resp.read().decode("utf-8", errors="ignore")
     except Exception as e:
-        logger.warning(f"[fetch_emails_from_url] Error fetching {url}: {e}")
+        logger.warning(f"[http_get] Error fetching {url}: {e}")
+        return ""
+
+
+def google_search(query: str) -> List[dict]:
+    """Call Google Custom Search API and return items list."""
+    if not GOOGLE_API_KEY or not GOOGLE_CX:
+        logger.error("[google_search] GOOGLE_API_KEY or GOOGLE_CX not set.")
+        return []
+
+    params = urllib.parse.urlencode(
+        {
+            "key": GOOGLE_API_KEY,
+            "cx": GOOGLE_CX,
+            "q": query,
+        }
+    )
+    url = f"https://www.googleapis.com/customsearch/v1?{params}"
+    logger.info(f"[google_search] Querying Google CSE: {query}")
+
+    try:
+        body = http_get(url, timeout=20)
+        data = json.loads(body) if body else {}
+    except Exception as e:
+        logger.warning(f"[google_search] Error calling Google CSE: {e}")
+        return []
+
+    items = data.get("items", []) or []
+    logger.info(f"[google_search] Got {len(items)} results for query: {query}")
+    return items
+
+
+def fetch_emails_from_url(url: str) -> List[str]:
+    """Fetch a page and extract email addresses."""
+    html = http_get(url, timeout=20)
+    if not html:
         return []
 
     email_pattern = r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}"
     emails = re.findall(email_pattern, html)
     unique_emails = sorted(set(emails))
-    logger.info(
-        f"[fetch_emails_from_url] Found {len(unique_emails)} emails on {url}"
-    )
+    logger.info(f"[fetch_emails_from_url] Found {len(unique_emails)} emails on {url}")
     return unique_emails
 
 
-def choose_primary_email(url: str, emails: list) -> str | None:
+def choose_primary_email(url: str, emails: List[str]) -> Optional[str]:
     if not emails:
         return None
 
-    # grab domain from URL
+    # Grab domain from URL
     domain_match = re.search(r"https?://([^/]+)/?", url)
     page_domain = domain_match.group(1).lower() if domain_match else ""
 
@@ -93,8 +116,8 @@ def run_agent() -> int:
     saved_count = 0
     now_iso = datetime.now(timezone.utc).isoformat()
 
-    for query in SEARCH_QUERIES:
-        query = query.strip()
+    for raw_query in SEARCH_QUERIES:
+        query = raw_query.strip()
         if not query:
             continue
 
@@ -140,6 +163,8 @@ def run_agent() -> int:
 
 def lambda_handler(event, context):
     logger.info(f"[lambda_handler] Starting agent: {AGENT_SOURCE}")
+    logger.info(f"[lambda_handler] Event: {json.dumps(event)}")
+
     try:
         saved = run_agent()
         body = {
@@ -149,11 +174,13 @@ def lambda_handler(event, context):
         logger.info(body)
         return {
             "statusCode": 200,
+            "headers": {"Content-Type": "application/json"},
             "body": json.dumps(body),
         }
     except Exception as e:
         logger.exception("[lambda_handler] Error running agent")
         return {
             "statusCode": 500,
+            "headers": {"Content-Type": "application/json"},
             "body": json.dumps({"error": str(e)}),
         }

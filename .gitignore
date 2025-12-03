@@ -1,18 +1,34 @@
-# Python
+# -------------------------------------------------
+# PYTHON
+# -------------------------------------------------
 __pycache__/
 *.pyc
 
-# Lambda build artifacts
+# -------------------------------------------------
+# LAMBDA BUILD ARTIFACTS
+# (Never commit build folders or generated zip files)
+# -------------------------------------------------
 *.zip
+sga_build/
+sga_lambda_function.zip
 
-# Terraform
+# -------------------------------------------------
+# TERRAFORM
+# (These files must stay local; they contain state & secrets)
+# -------------------------------------------------
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.*
 
-# IDE
+# -------------------------------------------------
+# IDE / EDITORS
+# -------------------------------------------------
 .vscode/
 .idea/
-lambda_build/
+
+# -------------------------------------------------
+# LOCAL CONFIG / SECRETS
+# -------------------------------------------------
 terraform.tfvars
+.env

@@ -1,34 +1,39 @@
-# -------------------------------------------------
-# PYTHON
-# -------------------------------------------------
+# === PYTHON ===
 __pycache__/
 *.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+dist/
+build/
 
-# -------------------------------------------------
-# LAMBDA BUILD ARTIFACTS
-# (Never commit build folders or generated zip files)
-# -------------------------------------------------
+# === LAMBDA ZIP ARTIFACTS ===
 *.zip
-sga_build/
-sga_lambda_function.zip
 
-# -------------------------------------------------
-# TERRAFORM
-# (These files must stay local; they contain state & secrets)
-# -------------------------------------------------
+# === TERRAFORM ===
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate
 terraform.tfstate.*
+crash.log
 
-# -------------------------------------------------
-# IDE / EDITORS
-# -------------------------------------------------
-.vscode/
-.idea/
-
-# -------------------------------------------------
-# LOCAL CONFIG / SECRETS
-# -------------------------------------------------
+# === SECRETS ===
 terraform.tfvars
-.env
+*.tfvars
+*.key
+*.pem
+*.env
+.env.local
+.env.* 
+
+# === OS / EDITOR TRASH ===
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.bak
+.idea/
+.vscode/

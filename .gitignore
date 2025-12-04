@@ -1,39 +1,21 @@
-# === PYTHON ===
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.venv/
-venv/
-env/
-pip-wheel-metadata/
-dist/
-build/
-
-# === LAMBDA ZIP ARTIFACTS ===
-*.zip
-
-# === TERRAFORM ===
+# Terraform
+*.tfstate
+*.tfstate.backup
 .terraform/
 .terraform.lock.hcl
-terraform.tfstate
-terraform.tfstate.*
-crash.log
 
-# === SECRETS ===
+# Lambda build artifacts
+lambda.zip
+package/
+__pycache__/
+
+# Python stuff
+*.pyc
+.env
+venv/
+
+# Local secrets
 terraform.tfvars
-*.tfvars
-*.key
-*.pem
-*.env
-.env.local
-.env.* 
 
-# === OS / EDITOR TRASH ===
-.DS_Store
-Thumbs.db
-*.swp
-*.swo
-*.bak
-.idea/
-.vscode/
+# Local exports (emails, scraped data – NEVER commit)
+leads.csv

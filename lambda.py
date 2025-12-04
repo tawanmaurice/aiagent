@@ -32,6 +32,9 @@ table = dynamodb.Table(TABLE_NAME)
 # Agent search definitions
 # ---------------------------------------------------
 AGENTS = {
+    # ----------------------------------------
+    # Existing 7 agents
+    # ----------------------------------------
     "student_athlete_leadership_agent": {
         "search_queries": [
             '"student-athlete leadership retreat" site:.edu',
@@ -89,8 +92,181 @@ AGENTS = {
         ],
         "max_results_per_query": 5,
     },
-}
 
+    # ----------------------------------------
+    # NEW: student leadership / CC heavy
+    # ----------------------------------------
+
+    # SGA leadership / student government
+    "sga_leadership_agent": {
+        "search_queries": [
+            '"student government association" "leadership retreat" site:.edu',
+            '"SGA leadership conference" site:.edu',
+            '"student government" "officer training" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Generic student leadership retreats
+    "student_leadership_retreat_agent": {
+        "search_queries": [
+            '"student leadership retreat" site:.edu',
+            '"student leader retreat" site:.edu',
+            '"leadership retreat for student leaders" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Generic student leadership conferences
+    "student_leadership_conference_agent": {
+        "search_queries": [
+            '"student leadership conference" site:.edu',
+            '"student leadership summit" site:.edu',
+            '"student leadership institute" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership summits (campus-wide)
+    "leadership_summit_agent": {
+        "search_queries": [
+            '"leadership summit" "student" site:.edu',
+            '"student leadership summit" "keynote" site:.edu',
+            '"leadership summit" "community college" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Officer training (clubs, orgs, SGA, RSO)
+    "officer_training_agent": {
+        "search_queries": [
+            '"student organization officer training" site:.edu',
+            '"club officer training" "student leadership" site:.edu',
+            '"student leader training" "officers" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Speaker series / lyceum / distinguished lecture
+    "speaker_series_lyceum_agent": {
+        "search_queries": [
+            '"lyceum series" "speaker" site:.edu',
+            '"distinguished lecture series" "student activities" site:.edu',
+            '"speaker series" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Orientation leaders / OLs
+    "orientation_leader_agent": {
+        "search_queries": [
+            '"orientation leader training" site:.edu',
+            '"orientation leaders" "student leadership" site:.edu',
+            '"orientation leader workshop" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Residence life / RA leadership
+    "res_life_ra_leadership_agent": {
+        "search_queries": [
+            '"resident assistant training" "leadership" site:.edu',
+            '"RA training" "leadership development" site:.edu',
+            '"residence life" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Honors program leadership
+    "honors_program_leadership_agent": {
+        "search_queries": [
+            '"honors program" "leadership conference" site:.edu',
+            '"honors college" "student leadership" site:.edu',
+            '"honors program" "leadership retreat" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership certificate programs
+    "leadership_certificate_program_agent": {
+        "search_queries": [
+            '"leadership certificate program" students site:.edu',
+            '"student leadership certificate" site:.edu',
+            '"co-curricular leadership program" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership academies
+    "leadership_academy_agent": {
+        "search_queries": [
+            '"student leadership academy" site:.edu',
+            '"emerging leaders program" site:.edu',
+            '"leadership academy" "student affairs" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Student activities / campus activities leadership
+    "student_activities_leadership_agent": {
+        "search_queries": [
+            '"student activities" "leadership workshop" site:.edu',
+            '"campus activities" "leadership development" site:.edu',
+            '"student activities office" "leadership series" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # College success / first-year experience style leadership
+    "college_success_leadership_agent": {
+        "search_queries": [
+            '"college success seminar" "leadership" site:.edu',
+            '"first year experience" "leadership" site:.edu',
+            '"student success workshop" "leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Career success leadership (career centers, career-ready events)
+    "career_success_leadership_agent": {
+        "search_queries": [
+            '"career services" "leadership workshop" site:.edu',
+            '"career readiness" "leadership" site:.edu',
+            '"professional success" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Social justice / DEI leadership
+    "social_justice_leadership_agent": {
+        "search_queries": [
+            '"social justice leadership" "students" site:.edu',
+            '"DEI leadership workshop" "students" site:.edu',
+            '"equity and inclusion" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Community college student leadership – heavy CC bias
+    "cc_student_leadership_agent": {
+        "search_queries": [
+            '"community college" "student leadership conference"',
+            '"community college" "student leadership retreat"',
+            '"community college" "student government" "leadership"',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Community college success & retention events
+    "cc_success_and_retention_agent": {
+        "search_queries": [
+            '"community college" "student success conference"',
+            '"community college" "retention summit" "students"',
+            '"community college" "first year experience" "leadership"',
+        ],
+        "max_results_per_query": 5,
+    },
+}
 
 # ---------------------------------------------------
 # Helper functions
@@ -212,7 +388,7 @@ def run_agent(agent_name: str, context: dict | None = None) -> dict:
     Generic runner for all agents.
     agent_name must exist in AGENTS keys.
 
-    New behavior:
+    Behavior:
     - Skip duplicates (if id already exists in DynamoDB)
     - Only save items that have a non-empty contact_email
     """
@@ -258,7 +434,7 @@ def run_agent(agent_name: str, context: dict | None = None) -> dict:
                 logger.info(f"[{agent_name}] No email on main page. Fallback search on domain: {domain}")
                 email = google_search_for_domain_email(domain)
 
-            # NEW: If still no email, skip saving this record
+            # If still no email, skip saving this record
             if not email:
                 logger.info(f"[{agent_name}] No email found even after fallback. Skipping URL: {url}")
                 continue
@@ -299,6 +475,7 @@ def make_response(body: dict, status_code: int = 200) -> dict:
 # ---------------------------------------------------
 # Lambda handlers (Terraform points to these)
 # ---------------------------------------------------
+
 def student_athlete_handler(event, context):
     body = run_agent("student_athlete_leadership_agent", event)
     return make_response(body)
@@ -331,4 +508,89 @@ def hs_student_council_handler(event, context):
 
 def summer_bridge_handler(event, context):
     body = run_agent("summer_bridge_orientation_agent", event)
+    return make_response(body)
+
+
+def sga_leadership_handler(event, context):
+    body = run_agent("sga_leadership_agent", event)
+    return make_response(body)
+
+
+def student_leadership_retreat_handler(event, context):
+    body = run_agent("student_leadership_retreat_agent", event)
+    return make_response(body)
+
+
+def student_leadership_conference_handler(event, context):
+    body = run_agent("student_leadership_conference_agent", event)
+    return make_response(body)
+
+
+def leadership_summit_handler(event, context):
+    body = run_agent("leadership_summit_agent", event)
+    return make_response(body)
+
+
+def officer_training_handler(event, context):
+    body = run_agent("officer_training_agent", event)
+    return make_response(body)
+
+
+def speaker_series_lyceum_handler(event, context):
+    body = run_agent("speaker_series_lyceum_agent", event)
+    return make_response(body)
+
+
+def orientation_leader_handler(event, context):
+    body = run_agent("orientation_leader_agent", event)
+    return make_response(body)
+
+
+def res_life_ra_leadership_handler(event, context):
+    body = run_agent("res_life_ra_leadership_agent", event)
+    return make_response(body)
+
+
+def honors_program_leadership_handler(event, context):
+    body = run_agent("honors_program_leadership_agent", event)
+    return make_response(body)
+
+
+def leadership_certificate_program_handler(event, context):
+    body = run_agent("leadership_certificate_program_agent", event)
+    return make_response(body)
+
+
+def leadership_academy_handler(event, context):
+    body = run_agent("leadership_academy_agent", event)
+    return make_response(body)
+
+
+def student_activities_leadership_handler(event, context):
+    body = run_agent("student_activities_leadership_agent", event)
+    return make_response(body)
+
+
+def college_success_leadership_handler(event, context):
+    body = run_agent("college_success_leadership_agent", event)
+    return make_response(body)
+
+
+def career_success_leadership_handler(event, context):
+    body = run_agent("career_success_leadership_agent", event)
+    return make_response(body)
+
+
+def social_justice_leadership_handler(event, context):
+    body = run_agent("social_justice_leadership_agent", event)
+    return make_response(body)
+
+
+def cc_student_leadership_handler(event, context):
+    body = run_agent("cc_student_leadership_agent", event)
+    return make_response(body)
+
+
+def cc_success_and_retention_handler(event, context):
+    body = run_agent("cc_success_and_retention_agent", event)
     return make_response(body)

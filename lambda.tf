@@ -155,7 +155,7 @@ resource "aws_lambda_function" "summer_bridge_orientation_agent" {
 }
 
 #####################################################
-# NEW: Student Leadership / Community College Agents
+# Student Leadership / Community College Agents
 #####################################################
 
 #############################################
@@ -299,11 +299,71 @@ resource "aws_lambda_function" "orientation_leader_agent" {
 }
 
 #############################################
-# Res Life / RA Leadership Agent
+# Res Life / RA Leadership Agent (broad)
 #############################################
 resource "aws_lambda_function" "res_life_ra_leadership_agent" {
   function_name = "res-life-ra-leadership-agent"
   handler       = "lambda.res_life_ra_leadership_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Resident Assistant Leadership Agent (narrow, events)
+#############################################
+resource "aws_lambda_function" "resident_assistant_leadership_agent" {
+  function_name = "resident-assistant-leadership-agent"
+  handler       = "lambda.resident_assistant_leadership_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Campus Ambassador Events Agent
+#############################################
+resource "aws_lambda_function" "campus_ambassador_events_agent" {
+  function_name = "campus-ambassador-events-agent"
+  handler       = "lambda.campus_ambassador_events_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Sophomore Leadership Agent
+#############################################
+resource "aws_lambda_function" "sophomore_leadership_agent" {
+  function_name = "sophomore-leadership-agent"
+  handler       = "lambda.sophomore_leadership_handler"
   runtime       = "python3.12"
 
   filename         = "lambda.zip"

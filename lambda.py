@@ -167,12 +167,54 @@ AGENTS = {
         "max_results_per_query": 5,
     },
 
-    # Residence life / RA leadership
+    # Residence life / RA leadership (broad)
     "res_life_ra_leadership_agent": {
         "search_queries": [
             '"resident assistant training" "leadership" site:.edu',
             '"RA training" "leadership development" site:.edu',
             '"residence life" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # ----------------------------------------
+    # NEW: RA / Ambassador / Sophomore focused
+    # ----------------------------------------
+
+    # RA-specific retreats / conferences (narrower, event-focused)
+    "resident_assistant_leadership_agent": {
+        "search_queries": [
+            '"resident assistant leadership retreat" site:.edu',
+            '"resident assistant leadership conference" site:.edu',
+            '"RA leadership retreat" site:.edu',
+            '"resident assistant leadership summit" site:.edu',
+            '"RA fall training retreat" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Campus / student ambassador events
+    "campus_ambassador_events_agent": {
+        "search_queries": [
+            '"student ambassador leadership retreat" site:.edu',
+            '"student ambassador leadership conference" site:.edu',
+            '"student ambassador training workshop" site:.edu',
+            '"campus ambassador leadership" "retreat" site:.edu',
+            '"student ambassador summit" site:.edu',
+            '"student ambassador orientation" "leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Sophomore / second-year leadership & success
+    "sophomore_leadership_agent": {
+        "search_queries": [
+            '"sophomore leadership retreat" site:.edu',
+            '"sophomore leadership program" site:.edu',
+            '"sophomore leadership conference" site:.edu',
+            '"second-year experience" "leadership" site:.edu',
+            '"second year leadership retreat" site:.edu',
+            '"sophomore success program" "leadership" site:.edu',
         ],
         "max_results_per_query": 5,
     },
@@ -548,6 +590,21 @@ def orientation_leader_handler(event, context):
 
 def res_life_ra_leadership_handler(event, context):
     body = run_agent("res_life_ra_leadership_agent", event)
+    return make_response(body)
+
+
+def resident_assistant_leadership_handler(event, context):
+    body = run_agent("resident_assistant_leadership_agent", event)
+    return make_response(body)
+
+
+def campus_ambassador_events_handler(event, context):
+    body = run_agent("campus_ambassador_events_agent", event)
+    return make_response(body)
+
+
+def sophomore_leadership_handler(event, context):
+    body = run_agent("sophomore_leadership_agent", event)
     return make_response(body)
 
 

@@ -1,21 +1,47 @@
-# Terraform
-*.tfstate
-*.tfstate.backup
+############################
+# TERRAFORM
+############################
 .terraform/
 .terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
 
-# Lambda build artifacts
+############################
+# LAMBDA BUILD ARTIFACTS
+############################
 lambda.zip
 package/
 __pycache__/
 
-# Python stuff
+############################
+# PYTHON
+############################
 *.pyc
-.env
-venv/
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
 
-# Local secrets
+############################
+# ENV / SECRETS
+############################
+.env
+*.env
 terraform.tfvars
 
-# Local exports (emails, scraped data – NEVER commit)
+############################
+# LOCAL DATA EXPORTS
+############################
 leads.csv
+export_leads.py
+leads/
+data/
+scraped/
+
+############################
+# OS / EDITOR FILES
+############################
+.DS_Store
+Thumbs.db
+.vscode/

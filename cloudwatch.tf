@@ -488,3 +488,67 @@ resource "aws_lambda_permission" "cc_success_and_retention_events" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.cc_success_and_retention_daily.arn
 }
+
+####################################################
+# NEW: RA / Ambassador / Sophomore daily schedules
+####################################################
+
+# 25) Resident Assistant Leadership – 15:00 UTC daily
+resource "aws_cloudwatch_event_rule" "resident_assistant_leadership_daily" {
+  name                = "resident-assistant-leadership-daily"
+  schedule_expression = "cron(0 15 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "resident_assistant_leadership_target" {
+  rule      = aws_cloudwatch_event_rule.resident_assistant_leadership_daily.name
+  target_id = "resident-assistant-leadership-lambda"
+  arn       = aws_lambda_function.resident_assistant_leadership_agent.arn
+}
+
+resource "aws_lambda_permission" "resident_assistant_leadership_events" {
+  statement_id  = "AllowExecutionFromCloudWatchResidentAssistantLeadership"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.resident_assistant_leadership_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.resident_assistant_leadership_daily.arn
+}
+
+# 26) Campus Ambassador Events – 15:05 UTC daily
+resource "aws_cloudwatch_event_rule" "campus_ambassador_events_daily" {
+  name                = "campus-ambassador-events-daily"
+  schedule_expression = "cron(5 15 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "campus_ambassador_events_target" {
+  rule      = aws_cloudwatch_event_rule.campus_ambassador_events_daily.name
+  target_id = "campus-ambassador-events-lambda"
+  arn       = aws_lambda_function.campus_ambassador_events_agent.arn
+}
+
+resource "aws_lambda_permission" "campus_ambassador_events_events" {
+  statement_id  = "AllowExecutionFromCloudWatchCampusAmbassadorEvents"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.campus_ambassador_events_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.campus_ambassador_events_daily.arn
+}
+
+# 27) Sophomore Leadership – 15:10 UTC daily
+resource "aws_cloudwatch_event_rule" "sophomore_leadership_daily" {
+  name                = "sophomore-leadership-daily"
+  schedule_expression = "cron(10 15 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "sophomore_leadership_target" {
+  rule      = aws_cloudwatch_event_rule.sophomore_leadership_daily.name
+  target_id = "sophomore-leadership-lambda"
+  arn       = aws_lambda_function.sophomore_leadership_agent.arn
+}
+
+resource "aws_lambda_permission" "sophomore_leadership_events" {
+  statement_id  = "AllowExecutionFromCloudWatchSophomoreLeadership"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.sophomore_leadership_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.sophomore_leadership_daily.arn
+}

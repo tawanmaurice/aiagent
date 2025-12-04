@@ -1,227 +1,155 @@
-#########################################
-# LAMBDA FUNCTIONS (8 AGENTS)
-#########################################
+#############################################
+# Lambda functions for multi-agent scraper  #
+# (Only Lambda resources – no terraform{},  #
+#  no provider, no variables, no DynamoDB,  #
+#  no IAM role definitions.)               #
+#############################################
 
-#########################################
-# SGA / STUDENT GOVERNMENT AGENT
-#########################################
+# Uses variables defined in variables.tf and IAM role in iamrole.tf
 
-resource "aws_lambda_function" "sga_agent" {
-  function_name = "sga-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
-  runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
-
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
-
-  environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "sga_student_government_agent"
-      SEARCH_QUERIES = "Student Government Association leadership retreat site:.edu||SGA leadership conference site:.edu"
-      MAX_RESULTS    = "5"
-    }
+locals {
+  common_env = {
+    GOOGLE_API_KEY = var.google_api_key
+    GOOGLE_CX      = var.google_cx
   }
 }
 
-#########################################
-# ORIENTATION / WELCOME WEEK AGENT
-#########################################
-
-resource "aws_lambda_function" "orientation_agent" {
-  function_name = "orientation-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# Student Athlete Leadership Agent
+#############################################
+resource "aws_lambda_function" "student_athlete_leadership_agent" {
+  function_name = "student-athlete-leadership-agent"
+  handler       = "lambda.student_athlete_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "orientation_welcome_week_agent"
-      SEARCH_QUERIES = "welcome week keynote site:.edu||new student orientation speaker site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }
 
-#########################################
-# STUDENT LEADERSHIP CONFERENCE / SUMMIT AGENT
-#########################################
-
-resource "aws_lambda_function" "leadership_conference_agent" {
-  function_name = "leadership-conference-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# Men of Color Initiative Agent
+#############################################
+resource "aws_lambda_function" "men_of_color_initiative_agent" {
+  function_name = "men-of-color-initiative-agent"
+  handler       = "lambda.men_of_color_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "student_leadership_conference_agent"
-      SEARCH_QUERIES = "student leadership conference site:.edu||student leadership summit site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }
 
-#########################################
-# STUDENT ACTIVITIES / RETREATS AGENT
-#########################################
-
-resource "aws_lambda_function" "activities_agent" {
-  function_name = "activities-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# First-Gen Student Success Agent
+#############################################
+resource "aws_lambda_function" "first_gen_student_success_agent" {
+  function_name = "first-gen-student-success-agent"
+  handler       = "lambda.first_gen_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "student_activities_retreats_agent"
-      SEARCH_QUERIES = "student activities leadership retreat site:.edu||student activities board leadership workshop site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }
 
-#########################################
-# LYCEUM / LECTURE SERIES AGENT
-#########################################
-
-resource "aws_lambda_function" "lyceum_agent" {
-  function_name = "lyceum-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# Multicultural Center Leadership Agent
+#############################################
+resource "aws_lambda_function" "multicultural_center_leadership_agent" {
+  function_name = "multicultural-center-leadership-agent"
+  handler       = "lambda.multicultural_center_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "lyceum_lecture_series_agent"
-      SEARCH_QUERIES = "lyceum series site:.edu||distinguished speaker series site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }
 
-#########################################
-# FIRST-YEAR EXPERIENCE / COLLEGE SUCCESS AGENT
-#########################################
-
-resource "aws_lambda_function" "fye_agent" {
-  function_name = "fye-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# Service Learning / Civic Engagement Agent
+#############################################
+resource "aws_lambda_function" "service_learning_civic_engagement_agent" {
+  function_name = "service-learning-civic-engagement-agent"
+  handler       = "lambda.service_learning_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "first_year_experience_agent"
-      SEARCH_QUERIES = "first year experience keynote site:.edu||college success workshop site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }
 
-#########################################
-# TRIO / STUDENT SUPPORT SERVICES AGENT
-#########################################
-
-resource "aws_lambda_function" "trio_agent" {
-  function_name = "trio-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# High School Student Council Leadership Agent
+#############################################
+resource "aws_lambda_function" "hs_student_council_leadership_agent" {
+  function_name = "hs-student-council-leadership-agent"
+  handler       = "lambda.hs_student_council_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "trio_student_support_agent"
-      SEARCH_QUERIES = "TRIO student support services leadership workshop site:.edu||Upward Bound leadership program site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }
 
-#########################################
-# DEI / BELONGING PROGRAMS AGENT
-#########################################
-
-resource "aws_lambda_function" "dei_agent" {
-  function_name = "dei-agent-v2"
-  role          = aws_iam_role.lambda_exec.arn
-  handler       = "lambda_function.lambda_handler"
+#############################################
+# Summer Bridge / Orientation Agent
+#############################################
+resource "aws_lambda_function" "summer_bridge_orientation_agent" {
+  function_name = "summer-bridge-orientation-agent"
+  handler       = "lambda.summer_bridge_handler"
   runtime       = "python3.12"
-  memory_size   = 512
-  timeout       = 30
 
-  filename         = "lambda_function.zip"
-  source_code_hash = filebase64sha256("lambda_function.zip")
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
 
   environment {
-    variables = {
-      DDB_TABLE_NAME = aws_dynamodb_table.speaking_leads.name
-      GOOGLE_API_KEY = var.google_api_key
-      GOOGLE_CX      = var.google_cx
-
-      AGENT_SOURCE   = "dei_belonging_programs_agent"
-      SEARCH_QUERIES = "diversity and inclusion student leadership workshop site:.edu||belonging student leadership program site:.edu"
-      MAX_RESULTS    = "5"
-    }
+    variables = local.common_env
   }
 }

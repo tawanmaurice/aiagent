@@ -94,7 +94,7 @@ AGENTS = {
     },
 
     # ----------------------------------------
-    # NEW: student leadership / CC heavy
+    # Student leadership / CC heavy
     # ----------------------------------------
 
     # SGA leadership / student government
@@ -178,7 +178,7 @@ AGENTS = {
     },
 
     # ----------------------------------------
-    # NEW: RA / Ambassador / Sophomore focused
+    # RA / Ambassador / Sophomore focused
     # ----------------------------------------
 
     # RA-specific retreats / conferences (narrower, event-focused)
@@ -305,6 +305,110 @@ AGENTS = {
             '"community college" "student success conference"',
             '"community college" "retention summit" "students"',
             '"community college" "first year experience" "leadership"',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # ----------------------------------------
+    # NEW 10 AGENTS – HS / TRIO / Greek / Peer / Belonging
+    # ----------------------------------------
+
+    # High school student leadership conferences
+    "hs_student_leadership_conferences_agent": {
+        "search_queries": [
+            '"high school student leadership conference"',
+            '"student leadership conference" "high school"',
+            '"ASB leadership conference" "high school"',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # High school faculty / staff training for leadership & climate
+    "hs_faculty_staff_training_agent": {
+        "search_queries": [
+            '"high school staff training" "student leadership"',
+            '"teacher in-service" "school climate" "leadership"',
+            '"professional development" "student engagement" "high school"',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Transfer student leadership
+    "transfer_student_leadership_agent": {
+        "search_queries": [
+            '"transfer student leadership" site:.edu',
+            '"transfer student orientation" "leadership" site:.edu',
+            '"transfer student success" "leadership program" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # TRIO-specific leadership
+    "trio_leadership_agent": {
+        "search_queries": [
+            '"TRIO SSS" "leadership conference" site:.edu',
+            '"TRIO" "student leadership retreat" site:.edu',
+            '"TRIO program" "leadership workshop" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Greek life leadership
+    "greek_life_leadership_agent": {
+        "search_queries": [
+            '"Greek life leadership retreat" site:.edu',
+            '"fraternity and sorority" "leadership conference" site:.edu',
+            '"fraternity sorority" "leadership summit" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Peer mentor leadership
+    "peer_mentor_leadership_agent": {
+        "search_queries": [
+            '"peer mentor training" "leadership" site:.edu',
+            '"peer leader" "leadership workshop" site:.edu',
+            '"peer mentor program" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Women in leadership (student-focused)
+    "women_in_leadership_agent": {
+        "search_queries": [
+            '"women in leadership" "student conference" site:.edu',
+            '"women\'s leadership conference" "students" site:.edu',
+            '"women in leadership" "student affairs" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership honor societies
+    "leadership_honor_society_agent": {
+        "search_queries": [
+            '"leadership honor society" "students" site:.edu',
+            '"National Society of Leadership and Success" "campus chapter"',
+            '"honor society" "leadership program" "students" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Student belonging & campus climate with leadership angle
+    "student_belonging_leadership_agent": {
+        "search_queries": [
+            '"sense of belonging" "student leadership" site:.edu',
+            '"student belonging" "leadership program" site:.edu',
+            '"campus climate" "student leaders" "belonging" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # School improvement / leadership teams (often HS or K-12)
+    "school_improvement_leadership_agent": {
+        "search_queries": [
+            '"school improvement team" "student leadership"',
+            '"school improvement plan" "student voice"',
+            '"student leadership team" "school improvement"',
         ],
         "max_results_per_query": 5,
     },
@@ -650,4 +754,56 @@ def cc_student_leadership_handler(event, context):
 
 def cc_success_and_retention_handler(event, context):
     body = run_agent("cc_success_and_retention_agent", event)
+    return make_response(body)
+
+
+# ---- New 10 handlers ----
+
+def hs_student_leadership_conferences_handler(event, context):
+    body = run_agent("hs_student_leadership_conferences_agent", event)
+    return make_response(body)
+
+
+def hs_faculty_staff_training_handler(event, context):
+    body = run_agent("hs_faculty_staff_training_agent", event)
+    return make_response(body)
+
+
+def transfer_student_leadership_handler(event, context):
+    body = run_agent("transfer_student_leadership_agent", event)
+    return make_response(body)
+
+
+def trio_leadership_handler(event, context):
+    body = run_agent("trio_leadership_agent", event)
+    return make_response(body)
+
+
+def greek_life_leadership_handler(event, context):
+    body = run_agent("greek_life_leadership_agent", event)
+    return make_response(body)
+
+
+def peer_mentor_leadership_handler(event, context):
+    body = run_agent("peer_mentor_leadership_agent", event)
+    return make_response(body)
+
+
+def women_in_leadership_handler(event, context):
+    body = run_agent("women_in_leadership_agent", event)
+    return make_response(body)
+
+
+def leadership_honor_society_handler(event, context):
+    body = run_agent("leadership_honor_society_agent", event)
+    return make_response(body)
+
+
+def student_belonging_leadership_handler(event, context):
+    body = run_agent("student_belonging_leadership_agent", event)
+    return make_response(body)
+
+
+def school_improvement_leadership_handler(event, context):
+    body = run_agent("school_improvement_leadership_agent", event)
     return make_response(body)

@@ -1,47 +1,59 @@
-############################
-# TERRAFORM
-############################
-.terraform/
-.terraform.lock.hcl
-*.tfstate
-*.tfstate.backup
-
-############################
-# LAMBDA BUILD ARTIFACTS
-############################
-lambda.zip
-package/
-__pycache__/
-
-############################
+# -----------------------------
 # PYTHON
-############################
-*.pyc
+# -----------------------------
+__pycache__/
+*.py[cod]
 *.pyo
 *.pyd
 *.egg-info/
+.eggs/
+*.log
+
+# -----------------------------
+# LAMBDA BUILD FILES
+# -----------------------------
+lambda.zip
+build-lambda/
+package/
 dist/
-build/
+venv/
+.venv/
+env/
+ENV/
 
-############################
-# ENV / SECRETS
-############################
-.env
-*.env
-terraform.tfvars
+# -----------------------------
+# TERRAFORM
+# -----------------------------
+# Local state files
+terraform.tfstate
+terraform.tfstate.backup
+*.tfstate
+*.tfstate.backup
 
-############################
-# LOCAL DATA EXPORTS
-############################
-leads.csv
-export_leads.py
-leads/
-data/
-scraped/
+# Crash log
+crash.log
 
-############################
-# OS / EDITOR FILES
-############################
+# Terraform working directory
+.terraform/
+.terraform.lock.hcl
+
+# Terraform plan files
+tfplan
+*.tfplan
+
+# Variables (never commit keys)
+*.tfvars
+*.tfvars.json
+
+# -----------------------------
+# IDE / EDITOR
+# -----------------------------
+.vscode/
+.idea/
+*.swp
+
+# -----------------------------
+# OS FILES
+# -----------------------------
 .DS_Store
 Thumbs.db
-.vscode/

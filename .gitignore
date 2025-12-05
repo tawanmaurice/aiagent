@@ -1,59 +1,40 @@
-# -----------------------------
-# PYTHON
-# -----------------------------
+# ----------------------------------
+# PYTHON / LAMBDA
+# ----------------------------------
 __pycache__/
-*.py[cod]
+*.pyc
 *.pyo
 *.pyd
+.Python
+build/
+dist/
 *.egg-info/
 .eggs/
-*.log
-
-# -----------------------------
-# LAMBDA BUILD FILES
-# -----------------------------
-lambda.zip
-build-lambda/
-package/
-dist/
-venv/
 .venv/
-env/
+venv/
 ENV/
+env/
+lambda.zip
 
-# -----------------------------
+# ----------------------------------
 # TERRAFORM
-# -----------------------------
-# Local state files
-terraform.tfstate
-terraform.tfstate.backup
+# ----------------------------------
 *.tfstate
-*.tfstate.backup
-
-# Crash log
-crash.log
-
-# Terraform working directory
+*.tfstate.*
 .terraform/
 .terraform.lock.hcl
 
-# Terraform plan files
-tfplan
-*.tfplan
+# ----------------------------------
+# AWS CREDENTIALS (just in case)
+# ----------------------------------
+*.pem
+*.key
+*.crt
 
-# Variables (never commit keys)
-*.tfvars
-*.tfvars.json
-
-# -----------------------------
-# IDE / EDITOR
-# -----------------------------
+# ----------------------------------
+# EDITOR / OS JUNK
+# ----------------------------------
 .vscode/
 .idea/
-*.swp
-
-# -----------------------------
-# OS FILES
-# -----------------------------
 .DS_Store
 Thumbs.db

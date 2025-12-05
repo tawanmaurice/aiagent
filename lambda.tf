@@ -319,7 +319,7 @@ resource "aws_lambda_function" "res_life_ra_leadership_agent" {
 }
 
 #####################################################
-# NEW: RA / Ambassador / Sophomore focused
+# RA / Ambassador / Sophomore focused
 #####################################################
 
 #############################################
@@ -752,6 +752,270 @@ resource "aws_lambda_function" "student_belonging_leadership_agent" {
 resource "aws_lambda_function" "school_improvement_leadership_agent" {
   function_name = "school-improvement-leadership-agent"
   handler       = "lambda.school_improvement_leadership_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+##########################################################
+# NEW 13 AGENTS – program / event pages only
+##########################################################
+
+#############################################
+# Emerging Leaders Program Agent
+#############################################
+resource "aws_lambda_function" "emerging_leaders_program_agent" {
+  function_name = "emerging-leaders-program-agent"
+  handler       = "lambda.emerging_leaders_program_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Leadership Capstone Agent
+#############################################
+resource "aws_lambda_function" "leadership_capstone_agent" {
+  function_name = "leadership-capstone-agent"
+  handler       = "lambda.leadership_capstone_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Student Leadership Grant Agent
+#############################################
+resource "aws_lambda_function" "student_leadership_grant_agent" {
+  function_name = "student-leadership-grant-agent"
+  handler       = "lambda.student_leadership_grant_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Intercultural Leadership Agent
+#############################################
+resource "aws_lambda_function" "intercultural_leadership_agent" {
+  function_name = "intercultural-leadership-agent"
+  handler       = "lambda.intercultural_leadership_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Leadership Conference RFP Agent
+#############################################
+resource "aws_lambda_function" "leadership_conference_rfp_agent" {
+  function_name = "leadership-conference-rfp-agent"
+  handler       = "lambda.leadership_conference_rfp_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Leadership Week Agent
+#############################################
+resource "aws_lambda_function" "leadership_week_agent" {
+  function_name = "leadership-week-agent"
+  handler       = "lambda.leadership_week_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Student Success Workshop Series Agent
+#############################################
+resource "aws_lambda_function" "student_success_workshop_series_agent" {
+  function_name = "student-success-workshop-series-agent"
+  handler       = "lambda.student_success_workshop_series_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Leadership Institute Agent
+#############################################
+resource "aws_lambda_function" "leadership_institute_agent" {
+  function_name = "leadership-institute-agent"
+  handler       = "lambda.leadership_institute_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Professional Development Day Agent
+#############################################
+resource "aws_lambda_function" "professional_development_day_agent" {
+  function_name = "professional-development-day-agent"
+  handler       = "lambda.professional_development_day_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Student Engagement Conference Agent
+#############################################
+resource "aws_lambda_function" "student_engagement_conference_agent" {
+  function_name = "student-engagement-conference-agent"
+  handler       = "lambda.student_engagement_conference_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Leadership Webinar Agent
+#############################################
+resource "aws_lambda_function" "leadership_webinar_agent" {
+  function_name = "leadership-webinar-agent"
+  handler       = "lambda.leadership_webinar_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Commuter Student Leadership Agent
+#############################################
+resource "aws_lambda_function" "commuter_student_leadership_agent" {
+  function_name = "commuter-student-leadership-agent"
+  handler       = "lambda.commuter_student_leadership_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Campus Leadership Innovation Agent
+#############################################
+resource "aws_lambda_function" "campus_leadership_innovation_agent" {
+  function_name = "campus-leadership-innovation-agent"
+  handler       = "lambda.campus_leadership_innovation_handler"
   runtime       = "python3.12"
 
   filename         = "lambda.zip"

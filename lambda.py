@@ -33,7 +33,7 @@ table = dynamodb.Table(TABLE_NAME)
 # ---------------------------------------------------
 AGENTS = {
     # ----------------------------------------
-    # Existing 7 agents
+    # Existing agents
     # ----------------------------------------
     "student_athlete_leadership_agent": {
         "search_queries": [
@@ -310,7 +310,7 @@ AGENTS = {
     },
 
     # ----------------------------------------
-    # NEW 10 AGENTS – HS / TRIO / Greek / Peer / Belonging
+    # Existing 10 HS / TRIO / Greek / Peer / Belonging
     # ----------------------------------------
 
     # High school student leadership conferences
@@ -409,6 +409,166 @@ AGENTS = {
             '"school improvement team" "student leadership"',
             '"school improvement plan" "student voice"',
             '"student leadership team" "school improvement"',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # ----------------------------------------
+    # NEW 13 AGENTS – program / event pages only
+    # ----------------------------------------
+
+    # Emerging Leaders style programs
+    "emerging_leaders_program_agent": {
+        "search_queries": [
+            '"Emerging Leaders Program" "students" site:.edu',
+            '"emerging leaders program" "leadership development" site:.edu',
+            '"Emerging Leaders" "student leadership" site:.edu',
+            '"Emerging Leaders" "leadership retreat" site:.edu',
+            '"Emerging Leaders" "co-curricular" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership certificate capstone / culminating experiences
+    "leadership_capstone_agent": {
+        "search_queries": [
+            '"leadership capstone" "student leadership" site:.edu',
+            '"leadership certificate" "capstone project" site:.edu',
+            '"leadership minor" "capstone" site:.edu',
+            '"leadership studies" "capstone experience" site:.edu',
+            '"leadership certificate program" "capstone" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Student leadership project / mini-grant / innovation funding
+    "student_leadership_grant_agent": {
+        "search_queries": [
+            '"student leadership" "mini-grant" site:.edu',
+            '"student leadership" "innovation grant" site:.edu',
+            '"student leadership project" "funding" site:.edu',
+            '"student leadership" "proposal" "grant" site:.edu',
+            '"student leadership" "application" "grant" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Intercultural / cross-cultural leadership programs
+    "intercultural_leadership_agent": {
+        "search_queries": [
+            '"intercultural leadership" "students" site:.edu',
+            '"intercultural leadership retreat" site:.edu',
+            '"intercultural leadership program" site:.edu',
+            '"global leadership" "intercultural" "students" site:.edu',
+            '"cross-cultural leadership" "student" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership conference calls for proposals / presenters
+    "leadership_conference_rfp_agent": {
+        "search_queries": [
+            '"student leadership conference" "call for proposals" site:.edu',
+            '"student leadership conference" "call for presenters" site:.edu',
+            '"leadership summit" "call for proposals" site:.edu',
+            '"leadership conference" "submit a proposal" site:.edu',
+            '"student leadership" "request for proposals" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership Week / themed leadership event series
+    "leadership_week_agent": {
+        "search_queries": [
+            '"Leadership Week" "students" site:.edu',
+            '"leadership week" "student activities" site:.edu',
+            '"leadership week" "schedule of events" site:.edu',
+            '"leadership week" "keynote" site:.edu',
+            '"leadership week" "workshop" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Student success + leadership workshop series
+    "student_success_workshop_series_agent": {
+        "search_queries": [
+            '"student success workshop series" "leadership" site:.edu',
+            '"student success workshop" "leadership" site:.edu',
+            '"success series" "student leadership" site:.edu',
+            '"student success" "leadership seminar" site:.edu',
+            '"student success center" "leadership workshop" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Leadership institutes (often 1–3 day intensive)
+    "leadership_institute_agent": {
+        "search_queries": [
+            '"student leadership institute" site:.edu',
+            '"leadership institute" "student affairs" site:.edu',
+            '"leadership institute" "student leaders" site:.edu',
+            '"leadership institute" "co-curricular" site:.edu',
+            '"leadership institute" "retreat" "students" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Professional development / training days for student leaders
+    "professional_development_day_agent": {
+        "search_queries": [
+            '"student leadership" "professional development day" site:.edu',
+            '"professional development day" "student leaders" site:.edu',
+            '"student affairs" "professional development day" students site:.edu',
+            '"leadership development day" "students" site:.edu',
+            '"training day" "student leaders" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Student engagement conferences / summits
+    "student_engagement_conference_agent": {
+        "search_queries": [
+            '"student engagement conference" site:.edu',
+            '"campus engagement conference" "students" site:.edu',
+            '"student engagement summit" site:.edu',
+            '"student engagement" "leadership conference" site:.edu',
+            '"student engagement" "symposium" "students" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Virtual / online leadership webinars
+    "leadership_webinar_agent": {
+        "search_queries": [
+            '"student leadership webinar" site:.edu',
+            '"leadership webinar" "students" site:.edu',
+            '"virtual leadership workshop" "students" site:.edu',
+            '"online leadership series" "students" site:.edu',
+            '"webinar" "student leadership development" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Commuter student leadership programs
+    "commuter_student_leadership_agent": {
+        "search_queries": [
+            '"commuter student" "leadership program" site:.edu',
+            '"commuter student leadership" site:.edu',
+            '"commuter student" "leadership workshop" site:.edu',
+            '"commuter student organization" "leadership" site:.edu',
+            '"commuter life" "student leadership" site:.edu',
+        ],
+        "max_results_per_query": 5,
+    },
+
+    # Campus leadership innovation / initiative style programs
+    "campus_leadership_innovation_agent": {
+        "search_queries": [
+            '"student leadership" "innovation challenge" site:.edu',
+            '"leadership innovation" "students" site:.edu',
+            '"innovation lab" "student leadership" site:.edu',
+            '"leadership" "innovation grant" "students" site:.edu',
+            '"leadership" "pilot program" "students" site:.edu',
         ],
         "max_results_per_query": 5,
     },
@@ -757,7 +917,7 @@ def cc_success_and_retention_handler(event, context):
     return make_response(body)
 
 
-# ---- New 10 handlers ----
+# ---- Existing 10 handlers ----
 
 def hs_student_leadership_conferences_handler(event, context):
     body = run_agent("hs_student_leadership_conferences_agent", event)
@@ -806,4 +966,71 @@ def student_belonging_leadership_handler(event, context):
 
 def school_improvement_leadership_handler(event, context):
     body = run_agent("school_improvement_leadership_agent", event)
+    return make_response(body)
+
+
+# ---- NEW 13 handlers ----
+
+def emerging_leaders_program_handler(event, context):
+    body = run_agent("emerging_leaders_program_agent", event)
+    return make_response(body)
+
+
+def leadership_capstone_handler(event, context):
+    body = run_agent("leadership_capstone_agent", event)
+    return make_response(body)
+
+
+def student_leadership_grant_handler(event, context):
+    body = run_agent("student_leadership_grant_agent", event)
+    return make_response(body)
+
+
+def intercultural_leadership_handler(event, context):
+    body = run_agent("intercultural_leadership_agent", event)
+    return make_response(body)
+
+
+def leadership_conference_rfp_handler(event, context):
+    body = run_agent("leadership_conference_rfp_agent", event)
+    return make_response(body)
+
+
+def leadership_week_handler(event, context):
+    body = run_agent("leadership_week_agent", event)
+    return make_response(body)
+
+
+def student_success_workshop_series_handler(event, context):
+    body = run_agent("student_success_workshop_series_agent", event)
+    return make_response(body)
+
+
+def leadership_institute_handler(event, context):
+    body = run_agent("leadership_institute_agent", event)
+    return make_response(body)
+
+
+def professional_development_day_handler(event, context):
+    body = run_agent("professional_development_day_agent", event)
+    return make_response(body)
+
+
+def student_engagement_conference_handler(event, context):
+    body = run_agent("student_engagement_conference_agent", event)
+    return make_response(body)
+
+
+def leadership_webinar_handler(event, context):
+    body = run_agent("leadership_webinar_agent", event)
+    return make_response(body)
+
+
+def commuter_student_leadership_handler(event, context):
+    body = run_agent("commuter_student_leadership_agent", event)
+    return make_response(body)
+
+
+def campus_leadership_innovation_handler(event, context):
+    body = run_agent("campus_leadership_innovation_agent", event)
     return make_response(body)

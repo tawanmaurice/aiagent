@@ -756,3 +756,267 @@ resource "aws_lambda_permission" "school_improvement_leadership_events" {
   principal     = "events.amazonaws.com"
   source_arn    = aws_cloudwatch_event_rule.school_improvement_leadership_daily.arn
 }
+
+##########################################################
+# NEW 13 AGENTS – program / event pages only (38–50)
+##########################################################
+
+# 38) Emerging Leaders Program – 16:05 UTC daily
+resource "aws_cloudwatch_event_rule" "emerging_leaders_program_daily" {
+  name                = "emerging-leaders-program-daily"
+  schedule_expression = "cron(5 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "emerging_leaders_program_target" {
+  rule      = aws_cloudwatch_event_rule.emerging_leaders_program_daily.name
+  target_id = "emerging-leaders-program-lambda"
+  arn       = aws_lambda_function.emerging_leaders_program_agent.arn
+}
+
+resource "aws_lambda_permission" "emerging_leaders_program_events" {
+  statement_id  = "AllowExecutionFromCloudWatchEmergingLeadersProgram"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.emerging_leaders_program_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.emerging_leaders_program_daily.arn
+}
+
+# 39) Leadership Capstone – 16:10 UTC daily
+resource "aws_cloudwatch_event_rule" "leadership_capstone_daily" {
+  name                = "leadership-capstone-daily"
+  schedule_expression = "cron(10 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "leadership_capstone_target" {
+  rule      = aws_cloudwatch_event_rule.leadership_capstone_daily.name
+  target_id = "leadership-capstone-lambda"
+  arn       = aws_lambda_function.leadership_capstone_agent.arn
+}
+
+resource "aws_lambda_permission" "leadership_capstone_events" {
+  statement_id  = "AllowExecutionFromCloudWatchLeadershipCapstone"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.leadership_capstone_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.leadership_capstone_daily.arn
+}
+
+# 40) Student Leadership Grant – 16:15 UTC daily
+resource "aws_cloudwatch_event_rule" "student_leadership_grant_daily" {
+  name                = "student-leadership-grant-daily"
+  schedule_expression = "cron(15 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "student_leadership_grant_target" {
+  rule      = aws_cloudwatch_event_rule.student_leadership_grant_daily.name
+  target_id = "student-leadership-grant-lambda"
+  arn       = aws_lambda_function.student_leadership_grant_agent.arn
+}
+
+resource "aws_lambda_permission" "student_leadership_grant_events" {
+  statement_id  = "AllowExecutionFromCloudWatchStudentLeadershipGrant"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.student_leadership_grant_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.student_leadership_grant_daily.arn
+}
+
+# 41) Intercultural Leadership – 16:20 UTC daily
+resource "aws_cloudwatch_event_rule" "intercultural_leadership_daily" {
+  name                = "intercultural-leadership-daily"
+  schedule_expression = "cron(20 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "intercultural_leadership_target" {
+  rule      = aws_cloudwatch_event_rule.intercultural_leadership_daily.name
+  target_id = "intercultural-leadership-lambda"
+  arn       = aws_lambda_function.intercultural_leadership_agent.arn
+}
+
+resource "aws_lambda_permission" "intercultural_leadership_events" {
+  statement_id  = "AllowExecutionFromCloudWatchInterculturalLeadership"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.intercultural_leadership_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.intercultural_leadership_daily.arn
+}
+
+# 42) Leadership Conference RFP – 16:25 UTC daily
+resource "aws_cloudwatch_event_rule" "leadership_conference_rfp_daily" {
+  name                = "leadership-conference-rfp-daily"
+  schedule_expression = "cron(25 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "leadership_conference_rfp_target" {
+  rule      = aws_cloudwatch_event_rule.leadership_conference_rfp_daily.name
+  target_id = "leadership-conference-rfp-lambda"
+  arn       = aws_lambda_function.leadership_conference_rfp_agent.arn
+}
+
+resource "aws_lambda_permission" "leadership_conference_rfp_events" {
+  statement_id  = "AllowExecutionFromCloudWatchLeadershipConferenceRFP"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.leadership_conference_rfp_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.leadership_conference_rfp_daily.arn
+}
+
+# 43) Leadership Week – 16:30 UTC daily
+resource "aws_cloudwatch_event_rule" "leadership_week_daily" {
+  name                = "leadership-week-daily"
+  schedule_expression = "cron(30 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "leadership_week_target" {
+  rule      = aws_cloudwatch_event_rule.leadership_week_daily.name
+  target_id = "leadership-week-lambda"
+  arn       = aws_lambda_function.leadership_week_agent.arn
+}
+
+resource "aws_lambda_permission" "leadership_week_events" {
+  statement_id  = "AllowExecutionFromCloudWatchLeadershipWeek"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.leadership_week_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.leadership_week_daily.arn
+}
+
+# 44) Student Success Workshop Series – 16:35 UTC daily
+resource "aws_cloudwatch_event_rule" "student_success_workshop_series_daily" {
+  name                = "student-success-workshop-series-daily"
+  schedule_expression = "cron(35 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "student_success_workshop_series_target" {
+  rule      = aws_cloudwatch_event_rule.student_success_workshop_series_daily.name
+  target_id = "student-success-workshop-series-lambda"
+  arn       = aws_lambda_function.student_success_workshop_series_agent.arn
+}
+
+resource "aws_lambda_permission" "student_success_workshop_series_events" {
+  statement_id  = "AllowExecutionFromCloudWatchStudentSuccessWorkshopSeries"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.student_success_workshop_series_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.student_success_workshop_series_daily.arn
+}
+
+# 45) Leadership Institute – 16:40 UTC daily
+resource "aws_cloudwatch_event_rule" "leadership_institute_daily" {
+  name                = "leadership-institute-daily"
+  schedule_expression = "cron(40 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "leadership_institute_target" {
+  rule      = aws_cloudwatch_event_rule.leadership_institute_daily.name
+  target_id = "leadership-institute-lambda"
+  arn       = aws_lambda_function.leadership_institute_agent.arn
+}
+
+resource "aws_lambda_permission" "leadership_institute_events" {
+  statement_id  = "AllowExecutionFromCloudWatchLeadershipInstitute"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.leadership_institute_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.leadership_institute_daily.arn
+}
+
+# 46) Professional Development Day – 16:45 UTC daily
+resource "aws_cloudwatch_event_rule" "professional_development_day_daily" {
+  name                = "professional-development-day-daily"
+  schedule_expression = "cron(45 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "professional_development_day_target" {
+  rule      = aws_cloudwatch_event_rule.professional_development_day_daily.name
+  target_id = "professional-development-day-lambda"
+  arn       = aws_lambda_function.professional_development_day_agent.arn
+}
+
+resource "aws_lambda_permission" "professional_development_day_events" {
+  statement_id  = "AllowExecutionFromCloudWatchProfessionalDevelopmentDay"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.professional_development_day_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.professional_development_day_daily.arn
+}
+
+# 47) Student Engagement Conference – 16:50 UTC daily
+resource "aws_cloudwatch_event_rule" "student_engagement_conference_daily" {
+  name                = "student-engagement-conference-daily"
+  schedule_expression = "cron(50 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "student_engagement_conference_target" {
+  rule      = aws_cloudwatch_event_rule.student_engagement_conference_daily.name
+  target_id = "student-engagement-conference-lambda"
+  arn       = aws_lambda_function.student_engagement_conference_agent.arn
+}
+
+resource "aws_lambda_permission" "student_engagement_conference_events" {
+  statement_id  = "AllowExecutionFromCloudWatchStudentEngagementConference"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.student_engagement_conference_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.student_engagement_conference_daily.arn
+}
+
+# 48) Leadership Webinar – 16:55 UTC daily
+resource "aws_cloudwatch_event_rule" "leadership_webinar_daily" {
+  name                = "leadership-webinar-daily"
+  schedule_expression = "cron(55 16 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "leadership_webinar_target" {
+  rule      = aws_cloudwatch_event_rule.leadership_webinar_daily.name
+  target_id = "leadership-webinar-lambda"
+  arn       = aws_lambda_function.leadership_webinar_agent.arn
+}
+
+resource "aws_lambda_permission" "leadership_webinar_events" {
+  statement_id  = "AllowExecutionFromCloudWatchLeadershipWebinar"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.leadership_webinar_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.leadership_webinar_daily.arn
+}
+
+# 49) Commuter Student Leadership – 17:00 UTC daily
+resource "aws_cloudwatch_event_rule" "commuter_student_leadership_daily" {
+  name                = "commuter-student-leadership-daily"
+  schedule_expression = "cron(0 17 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "commuter_student_leadership_target" {
+  rule      = aws_cloudwatch_event_rule.commuter_student_leadership_daily.name
+  target_id = "commuter-student-leadership-lambda"
+  arn       = aws_lambda_function.commuter_student_leadership_agent.arn
+}
+
+resource "aws_lambda_permission" "commuter_student_leadership_events" {
+  statement_id  = "AllowExecutionFromCloudWatchCommuterStudentLeadership"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.commuter_student_leadership_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.commuter_student_leadership_daily.arn
+}
+
+# 50) Campus Leadership Innovation – 17:05 UTC daily
+resource "aws_cloudwatch_event_rule" "campus_leadership_innovation_daily" {
+  name                = "campus-leadership-innovation-daily"
+  schedule_expression = "cron(5 17 * * ? *)"
+}
+
+resource "aws_cloudwatch_event_target" "campus_leadership_innovation_target" {
+  rule      = aws_cloudwatch_event_rule.campus_leadership_innovation_daily.name
+  target_id = "campus-leadership-innovation-lambda"
+  arn       = aws_lambda_function.campus_leadership_innovation_agent.arn
+}
+
+resource "aws_lambda_permission" "campus_leadership_innovation_events" {
+  statement_id  = "AllowExecutionFromCloudWatchCampusLeadershipInnovation"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.campus_leadership_innovation_agent.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.campus_leadership_innovation_daily.arn
+}

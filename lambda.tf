@@ -9,8 +9,51 @@
 
 locals {
   common_env = {
+    # ----- Existing Google Custom Search config -----
     GOOGLE_API_KEY = var.google_api_key
     GOOGLE_CX      = var.google_cx
+
+    # ----- SES / email settings -----
+    # Region where SES is configured (must match where your verified email lives)
+    SES_REGION = "us-east-1"
+
+    # The email address you send *from* (must be SES-verified in SES)
+    FROM_EMAIL           = "tawanmaurice@gmail.com"
+
+    # Where daily/weekly reports get sent (can be same as FROM_EMAIL)
+    REPORT_EMAIL         = "tawanmaurice@gmail.com"
+
+    # Test mode:
+    # - "true"  => only sends ONE test email to TEST_RECIPIENT_EMAIL
+    # - "false" => sends real outreach emails to leads (after GO_LIVE_DATE)
+    TEST_MODE            = "true"
+    TEST_RECIPIENT_EMAIL = "tawanmaurice@gmail.com"
+
+    # ----- Outreach behavior controls -----
+
+    # Do NOT send real outreach emails before this date (Eastern time)
+    GO_LIVE_DATE = "2026-01-06"
+
+    # Max total outreach emails per day across all agents
+    DAILY_TOTAL_LIMIT = "50"
+
+    # Max outreach emails per day to the SAME domain (e.g. mycollege.edu)
+    MAX_PER_DOMAIN_PER_DAY = "3"
+
+    # Total emails in the sequence per contact (1 initial + follow-ups)
+    MAX_SEQUENCE_STEPS = "5"
+
+    # Days after initial email to send the first follow-up
+    INITIAL_FOLLOWUP_DAYS = "4"
+
+    # Days between subsequent follow-ups (email #2 → #3 → #4 → #5)
+    FOLLOWUP_INTERVAL_DAYS = "7"
+
+    # Only send to .edu addresses if "true"
+    ONLY_EDU_EMAILS = "true"
+
+    # How often you get the reply / stats report: "daily" or "weekly"
+    REPLY_REPORT_PERIOD = "weekly"
   }
 }
 
@@ -1016,6 +1059,26 @@ resource "aws_lambda_function" "commuter_student_leadership_agent" {
 resource "aws_lambda_function" "campus_leadership_innovation_agent" {
   function_name = "campus-leadership-innovation-agent"
   handler       = "lambda.campus_leadership_innovation_handler"
+  runtime       = "python3.12"
+
+  filename         = "lambda.zip"
+  source_code_hash = filebase64sha256("lambda.zip")
+
+  role        = aws_iam_role.lambda_exec.arn
+  timeout     = 900
+  memory_size = 512
+
+  environment {
+    variables = local.common_env
+  }
+}
+
+#############################################
+# Daily Outreach Email Agent (NEW)
+#############################################
+resource "aws_lambda_function" "daily_outreach" {
+  function_name = "speaking-leads-daily-outreach"
+  handler       = "lambda.daily_outreach_handler"
   runtime       = "python3.12"
 
   filename         = "lambda.zip"

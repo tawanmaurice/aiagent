@@ -1,40 +1,64 @@
-# ----------------------------------
-# PYTHON / LAMBDA
-# ----------------------------------
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.Python
-build/
-dist/
-*.egg-info/
-.eggs/
-.venv/
-venv/
-ENV/
-env/
-lambda.zip
-
-# ----------------------------------
-# TERRAFORM
-# ----------------------------------
-*.tfstate
-*.tfstate.*
+############################################
+# Terraform
+############################################
+# Local Terraform directories
 .terraform/
 .terraform.lock.hcl
 
-# ----------------------------------
-# AWS CREDENTIALS (just in case)
-# ----------------------------------
-*.pem
-*.key
-*.crt
+# Terraform state
+terraform.tfstate
+terraform.tfstate.*
+*.tfstate
+*.tfstate.*
 
-# ----------------------------------
-# EDITOR / OS JUNK
-# ----------------------------------
+# Terraform plan files
+tfplan
+
+# Local configuration
+terraform.tfvars
+
+############################################
+# Lambda build / Python packaging
+############################################
+# Build folders
+build/
+build-lambda/
+package/
+dist/
+__pycache__/
+
+# Zip files (NEVER commit bundled Lambda)
+*.zip
+lambda.zip
+
+# Virtual environments
+venv/
+env/
+.venv/
+.env/
+
+# Python cache
+*.pyc
+*.pyo
+*.pyd
+
+############################################
+# VS Code / Editor settings
+############################################
 .vscode/
+.settings/
 .idea/
+
+############################################
+# OS files
+############################################
 .DS_Store
 Thumbs.db
+desktop.ini
+
+############################################
+# Logs / temp
+############################################
+*.log
+logs/
+tmp/

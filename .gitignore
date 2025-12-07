@@ -1,39 +1,57 @@
-# === PYTHON ===
+########################################
+# PYTHON
+########################################
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
+
+# Virtual envs
 .venv/
 venv/
 env/
-pip-wheel-metadata/
-dist/
-build/
 
-# === LAMBDA ZIP ARTIFACTS ===
+########################################
+# LAMBDA BUILD ARTIFACTS
+########################################
+# Build folders / zip files
 *.zip
+sga_build/
+build/
+dist/
 
-# === TERRAFORM ===
+########################################
+# TERRAFORM
+########################################
 .terraform/
 .terraform.lock.hcl
+
+# State files
 terraform.tfstate
 terraform.tfstate.*
-crash.log
+*.tfstate
+*.tfstate.*
 
-# === SECRETS ===
+# Local variable files (secrets)
 terraform.tfvars
 *.tfvars
-*.key
-*.pem
-*.env
-.env.local
-.env.* 
+*.auto.tfvars
 
-# === OS / EDITOR TRASH ===
+########################################
+# IDE / EDITORS
+########################################
+.vscode/
+.idea/
+
+########################################
+# OS TRASH
+########################################
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-*.bak
-.idea/
-.vscode/
+
+########################################
+# LOGS / TEMP
+########################################
+*.log
+logs/
+tmp/

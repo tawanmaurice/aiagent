@@ -1,11 +1,8 @@
-resource "aws_dynamodb_table" "speaking_leads" {
-  name         = "speaking-leads-v3-multi"
-  billing_mode = "PAY_PER_REQUEST"
+#########################################
+# Reuse existing DynamoDB table
+#########################################
 
-  hash_key = "id"
-
-  attribute {
-    name = "id"
-    type = "S"
-  }
+data "aws_dynamodb_table" "speaking_leads" {
+  # Existing table created by the main speaking-leads project
+  name = "speaking-leads-v3-multi"
 }
